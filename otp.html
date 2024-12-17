@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Generator with Mouse Events</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+      body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+.otp-container {
+    margin: 10px 0;
+}
+
+#otp {
+    font-size: 1.5rem;
+    padding: 5px;
+    text-align: center;
+    width: 250px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.instructions {
+    margin: 20px 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+#feedback {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: green;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OTP Generator</h1>
+        <div class="otp-container">
+            <input type="text" id="otp" readonly placeholder="Your OTP will appear here" />
+        </div>
+        <p class="instructions">
+            <b>Mouse Events:</b><br>
+            - Click: Generate OTP<br>
+            - Double Click: Copy OTP<br>
+            - Mouse Over: Show OTP<br>
+            - Mouse Out: Hide OTP<br>
+            - Right Click: Reset OTP
+        </p>
+        <button id="generateBtn">Generate OTP</button>
+        <p id="feedback"></p>
+    </div>
+    <script>
+      // Select elements
+const otpField = document.getElementById('otp');
+const generateBtn = document.getElementById('generateBtn');
+const feedback = document.getElementById('feedback');
+
+// Function to generate a 6-digit OTP
+function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// Event: Generate OTP on Click
+generateBtn.addEventListener('click', () => {
+    const otp = generateOTP();
+    otpField.value = otp;
+    feedback.textContent = 'OTP Generated!';
+});
+
+// Event: Copy OTP on Double Click
+otpField.addEventListener('dblclick', () => {
+    if (otpField.value) {
+        navigator.clipboard.writeText(otpField.value)
+            .then(() => {
+                feedback.textContent = 'OTP copied to clipboard!';
+            })
+            .catch(err => console.error('Failed to copy:', err));
+    } else {
+        feedback.textContent = 'No OTP to copy!';
+    }
+});
+
+// Event: Show OTP on Mouse Over
+otpField.addEventListener('mouseover', () => {
+    otpField.style.color = 'black';
+    otpField.style.borderColor = 'green';
+});
+
+// Event: Hide OTP on Mouse Out
+otpField.addEventListener('mouseout', () => {
+    otpField.style.color = 'transparent';
+    otpField.style.borderColor = '#ccc';
+});
+
+// Event: Reset OTP on Right Click
+otpField.addEventListener('contextmenu', (e) => {
+    e.preventDefault(); // Prevent default right-click behavior
+    otpField.value = '';
+    feedback.textContent = 'OTP Reset!';
+});
+
+    </script>
+</body>
+</html>
